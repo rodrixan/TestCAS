@@ -14,34 +14,34 @@ public class CASList extends CASElement {
 	public CASList(List<CASElement> elementList) {
 		this.elementList = elementList;
 	}
-	
+
 	public CASElement get(int index) {
 		return elementList.get(index);
 	}
 
 	public boolean add(CASElement elem) {
-		if(elem.getType()!=CASElemType.LIST){
+		if (elem.getType() != CASElemType.LIST) {
 			return elementList.add(elem);
 		}
-		
-		List<CASElement> addedList=addListElements(elementList, (CASList) elem);
-		
-		if(addedList!=null){
-			elementList=addedList;
+
+		final CASList addedList = addListElements(this, (CASList) elem);
+
+		if (addedList != null) {
+			elementList = addedList.elementList;
 			return true;
 		}
 		return false;
 	}
-	
-	public static List<CASElement> concat(CASElement... elements) {
-		List<CASElement> newList = new ArrayList<CASElement>();
+
+	public static CASList concat(CASElement... elements) {
+		CASList newList = new CASList();
 
 		for (final CASElement e : elements) {
 			if (e.getType() != CASElemType.LIST) {
 				newList.add(e);
 			} else {
-				newList=addListElements(newList, (CASList) e);
-				if(newList==null){
+				newList = addListElements(newList, (CASList) e);
+				if (newList == null) {
 					break;
 				}
 			}
@@ -49,9 +49,9 @@ public class CASList extends CASElement {
 
 		return newList;
 	}
-	
-	private static List<CASElement> addListElements(List<CASElement> oldList, CASList listElement) {
-		List<CASElement> newList= new ArrayList<CASElement>(oldList);
+
+	private static CASList addListElements(CASList oldList, CASList listElement) {
+		final List<CASElement> newList = new ArrayList<>(oldList.elementList);
 		for (final CASElement e : listElement.elementList) {
 			if (e.getType() != CASElemType.LIST) {
 				newList.add(e);
@@ -59,53 +59,54 @@ public class CASList extends CASElement {
 				return null;
 			}
 		}
-		return newList;
-		
+		return new CASList(newList);
+
 	}
 
 	public CASElement set(int index, CASElement elem) {
-		CASElement previousItem=elementList.get(index);
-		List<CASElement> settedList;
-		
-		if(elem.getType()!=CASElemType.LIST){
+		CASElement previousItem = elementList.get(index);
+		CASList settedList;
+
+		if (elem.getType() != CASElemType.LIST) {
 			elementList.set(index, elem);
-		}else{
-			settedList=setListElements(elementList,(CASList) elem,index);
-			if(settedList!=null){
-				elementList=settedList;
-			}else{
-				previousItem=null;
+		} else {
+			settedList = setListElements(this, (CASList) elem, index);
+			if (settedList != null) {
+				elementList = settedList.elementList;
+			} else {
+				previousItem = null;
 			}
 		}
-		
+
 		return previousItem;
 	}
 
-	private List<CASElement> setListElements(List<CASElement> elementList, CASList listToSet, int index) {
-		List<CASElement> PreviousSublist = elementList.subList(0, index);
-		List<CASElement> PostSublist = elementList.subList(index, elementList.size());
-		
-		return concat(new CASList(PreviousSublist), listToSet, new CASList(PostSublist));
+	private CASList setListElements(CASList elementList, CASList listToSet, int index) {
+		final CASList previousSublist = elementList.subList(0, index);
+		final CASList postSublist = elementList.subList(index, elementList.size());
+
+		return concat(previousSublist, listToSet, postSublist);
 	}
 
 	public CASElement remove(int index) {
 		return elementList.remove(index);
 	}
 
-	public void moveElement(int fromIndex, int toIndex) {
+	public CASElement moveElement(int fromIndex, int toIndex) {
 		final CASElement elemToMove = elementList.remove(fromIndex);
 		elementList.set(toIndex, elemToMove);
+		return elemToMove;
 	}
 
-	public List<CASElement> sublist(int fromIndex, int toIndex) {
-		return elementList.subList(fromIndex, toIndex);
+	public CASList subList(int fromIndex, int toIndex) {
+		return new CASList(elementList.subList(fromIndex, toIndex));
 	}
 
 	public boolean contains(CASElement element) {
 		return elementList.contains(element);
 	}
-	
-	public int indexOf(CASElement element){
+
+	public int indexOf(CASElement element) {
 		return elementList.indexOf(element);
 	}
 
@@ -122,21 +123,25 @@ public class CASList extends CASElement {
 	public String getElemRepresentation() {
 		final StringBuilder builder = new StringBuilder();
 		for (final CASElement e : elementList) {
-			builder.append(e.getElemRepresentation()+",");
+			builder.append(e.getElemRepresentation() + ",");
 		}
-		String cleanString = removeLastColon(builder.toString());
-		
+		final String cleanString = removeLastColon(builder.toString());
+
 		return cleanString;
 	}
 
 	private String removeLastColon(final String dirtyString) {
-		int lastColonIndex=dirtyString.lastIndexOf(",");
-		String cleanString= dirtyString.substring(0, lastColonIndex);
+		final int lastColonIndex = dirtyString.lastIndexOf(",");
+		final String cleanString = dirtyString.substring(0, lastColonIndex);
 		return cleanString;
 	}
 
+	public int size() {
+		return elementList.size();
+	}
+
 	@Override
-	public Integer getElemValue() {
+	public int getElemValue() {
 		return NAN;
 	}
 }

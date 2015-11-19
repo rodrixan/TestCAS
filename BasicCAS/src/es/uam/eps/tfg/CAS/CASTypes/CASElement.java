@@ -20,7 +20,7 @@ public abstract class CASElement {
 		return elemRepresentation;
 	}
 
-	public Integer getElemValue() {
+	public int getElemValue() {
 		return elemValue;
 	}
 

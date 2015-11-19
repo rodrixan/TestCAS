@@ -4,7 +4,7 @@ public abstract class CASOperation extends CASElement {
 
 	private final String operationName;
 	private final String operator;
-	private CASElement param;
+	protected CASElement param;
 
 	public CASOperation(String operationName, String operator, CASElement param) {
 		this.operationName = operationName;
@@ -20,10 +20,6 @@ public abstract class CASOperation extends CASElement {
 		return operator;
 	}
 
-	public CASElement getParam() {
-		return param;
-	}
-
 	@Override
 	public CASElemType getType() {
 		return CASElemType.OPERATION;
@@ -35,7 +31,7 @@ public abstract class CASOperation extends CASElement {
 	}
 
 	@Override
-	public Integer getElemValue() {
+	public int getElemValue() {
 		return NAN;
 	}
 
