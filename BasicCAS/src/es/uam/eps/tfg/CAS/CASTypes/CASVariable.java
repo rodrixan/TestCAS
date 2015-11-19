@@ -1,10 +1,10 @@
-package es.uam.eps.tfg.CASTest.CASTypes;
+package es.uam.eps.tfg.CAS.CASTypes;
 
 public class CASVariable extends CASElement {
 
 	public CASVariable(String name) {
 		this.elemRepresentation = name;
-		this.expressionValue = NAN;
+		this.elemValue = NAN;
 	}
 
 	@Override

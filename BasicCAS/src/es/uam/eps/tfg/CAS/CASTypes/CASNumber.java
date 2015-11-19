@@ -1,10 +1,10 @@
-package es.uam.eps.tfg.CASTest.CASTypes;
+package es.uam.eps.tfg.CAS.CASTypes;
 
 public class CASNumber extends CASElement {
 
 	public CASNumber(int value) {
-		this.expressionValue = value;
-		this.elemRepresentation = expressionValue.toString();
+		this.elemValue = value;
+		this.elemRepresentation = elemValue.toString();
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package es.uam.eps.tfg.CASTest.CASTypes;
+package es.uam.eps.tfg.CAS.CASTypes;
 
 public abstract class CASElement {
 
@@ -12,18 +12,16 @@ public abstract class CASElement {
 
 	protected String elemRepresentation;
 
-	protected Integer expressionValue;
+	protected Integer elemValue;
 
-	public CASElemType getType() {
-		return CASElemType.ELEMENT;
-	};
+	abstract public CASElemType getType();
 
-	String getElemRepresentation() {
+	public String getElemRepresentation() {
 		return elemRepresentation;
 	}
 
-	Integer getExpressionValue() {
-		return expressionValue;
+	public Integer getElemValue() {
+		return elemValue;
 	}
 
 	@Override
@@ -42,7 +40,7 @@ public abstract class CASElement {
 		if (!this.elemRepresentation.equals(other.getElemRepresentation())) {
 			return false;
 		}
-		if (this.expressionValue != other.getExpressionValue()) {
+		if (this.elemValue != other.getElemValue()) {
 			return false;
 		}
 

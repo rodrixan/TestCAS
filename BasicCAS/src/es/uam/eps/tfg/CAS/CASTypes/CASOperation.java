@@ -1,6 +1,6 @@
-package es.uam.eps.tfg.CASTest.CASTypes;
+package es.uam.eps.tfg.CAS.CASTypes;
 
-abstract class CASOperation extends CASElement {
+public abstract class CASOperation extends CASElement {
 
 	private final String operationName;
 	private final String operator;
@@ -30,12 +30,13 @@ abstract class CASOperation extends CASElement {
 	}
 
 	@Override
-	String getElemRepresentation() {
+	public String getElemRepresentation() {
 		return operationName + "(" + param.getElemRepresentation() + ")";
 	}
 
 	@Override
-	Integer getExpressionValue() {
+	public Integer getElemValue() {
 		return NAN;
 	}
+
 }
