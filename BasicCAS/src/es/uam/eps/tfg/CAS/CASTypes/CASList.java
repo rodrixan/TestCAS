@@ -94,7 +94,7 @@ public class CASList extends CASElement {
 
 	public CASElement moveElement(int fromIndex, int toIndex) {
 		final CASElement elemToMove = elementList.remove(fromIndex);
-		elementList.set(toIndex, elemToMove);
+		elementList.add(toIndex, elemToMove);
 		return elemToMove;
 	}
 
@@ -136,6 +136,7 @@ public class CASList extends CASElement {
 		return cleanString;
 	}
 
+	@Override
 	public int size() {
 		return elementList.size();
 	}

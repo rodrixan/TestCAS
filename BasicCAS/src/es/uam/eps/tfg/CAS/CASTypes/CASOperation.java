@@ -35,4 +35,13 @@ public abstract class CASOperation extends CASElement {
 		return NAN;
 	}
 
+	@Override
+	public int size() {
+		return 0;
+	}
+
+	public int paramSize() {
+		return param.size();
+	}
+
 }

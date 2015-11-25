@@ -1,5 +1,6 @@
 package es.uam.eps.tfg.CAS.CASOperations;
 
+import es.uam.eps.tfg.CAS.CASTypes.CASElement;
 import es.uam.eps.tfg.CAS.CASTypes.CASList;
 import es.uam.eps.tfg.CAS.CASTypes.CASOperation;
 
@@ -17,6 +18,10 @@ public class SUM extends CASOperation {
 	}
 
 	public boolean associateSUM(int fromIndex, int toIndex) {
+
+		if (fromIndex == 0 && toIndex == ((CASList) param).size() - 1) {
+			return true;
+		}
 		final int paramListSize = ((CASList) param).size();
 		final CASList preAssocitedElems = ((CASList) param).subList(0, fromIndex);
 		final CASList postAssociatedElems = ((CASList) param).subList(toIndex, paramListSize);
@@ -32,6 +37,13 @@ public class SUM extends CASOperation {
 			return true;
 		}
 		return false;
+	}
+
+	public int getPositionOf(CASElement element) {
+		if (((CASList) param).contains(element)) {
+			return ((CASList) param).indexOf(element);
+		}
+		return -1;
 	}
 
 	@Override

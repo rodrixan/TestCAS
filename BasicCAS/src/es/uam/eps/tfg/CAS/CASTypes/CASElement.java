@@ -8,21 +8,11 @@ public abstract class CASElement {
 
 	public static final int NAN = -1;
 
-	protected CASElemType type;
-
-	protected String elemRepresentation;
-
-	protected Integer elemValue;
-
 	abstract public CASElemType getType();
 
-	public String getElemRepresentation() {
-		return elemRepresentation;
-	}
+	abstract public String getElemRepresentation();
 
-	public int getElemValue() {
-		return elemValue;
-	}
+	abstract public int getElemValue();
 
 	@Override
 	public boolean equals(Object obj) {
@@ -34,17 +24,19 @@ public abstract class CASElement {
 		}
 		final CASElement other = (CASElement) obj;
 
-		if (!this.type.equals(other.getType())) {
+		if (!this.getType().equals(other.getType())) {
 			return false;
 		}
-		if (!this.elemRepresentation.equals(other.getElemRepresentation())) {
+		if (!this.getElemRepresentation().equals(other.getElemRepresentation())) {
 			return false;
 		}
-		if (this.elemValue != other.getElemValue()) {
+		if (this.getElemValue() != other.getElemValue()) {
 			return false;
 		}
 
 		return true;
 	}
+
+	public abstract int size();
 
 }
