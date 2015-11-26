@@ -5,31 +5,32 @@ import es.uam.eps.tfg.CAS.CASTypes.CASElement;
 import es.uam.eps.tfg.CAS.CASTypes.CASList;
 import es.uam.eps.tfg.CAS.CASTypes.CASOperation;
 
-public class SUM extends CASOperation {
+public class MUL extends CASOperation {
 
-	public static final String SUM_NAME = "SUM";
-	public static final String SUM_OPERATOR = "+";
+	public static final String MUL_NAME = "MUL";
+	public static final String MUL_OPERATOR = "*";
 
-	public SUM(CASList listParam) {
-		super(SUM_NAME, SUM_OPERATOR, listParam);
+	public MUL(CASList listParam) {
+		super(MUL_NAME, MUL_OPERATOR, listParam);
 	}
 
-	public void conmuteSUM(int fromIndex, int toIndex) {
+	public void conmuteMUL(int fromIndex, int toIndex) {
 		((CASList) param).moveElement(fromIndex, toIndex);
 	}
 
-	public boolean associateSUM(int fromIndex, int toIndex) {
+	public boolean associateMUL(int fromIndex, int toIndex) {
 
 		if (fromIndex == 0 && toIndex == ((CASList) param).size() - 1) {
 			return true;
 		}
+
 		final int paramListSize = ((CASList) param).size();
 		final CASList preAssocitedElems = ((CASList) param).subList(0, fromIndex);
 		final CASList postAssociatedElems = ((CASList) param).subList(toIndex, paramListSize);
 
 		final CASList associtatedElemList = ((CASList) param).subList(fromIndex, toIndex);
 
-		final SUM associatedElemOperation = new SUM(associtatedElemList);
+		final MUL associatedElemOperation = new MUL(associtatedElemList);
 
 		final CASList associatedList = CASList.concat(preAssocitedElems, associatedElemOperation, postAssociatedElems);
 
@@ -53,17 +54,17 @@ public class SUM extends CASOperation {
 
 	@Override
 	public int getElemValue() {
-		int sumValue = 0;
+		int mulValue = 0;
 		for (int i = 0; i < ((CASList) param).size(); i++) {
-			sumValue += ((CASList) param).get(i).getElemValue();
+			mulValue *= ((CASList) param).get(i).getElemValue();
 		}
-		return sumValue;
+		return mulValue;
 	}
 
-	public boolean identitySUM() {
-		final int indexOfZero = ((CASList) param).indexOf(CASConstants.ZERO);
-		if (indexOfZero != -1) {
-			((CASList) param).remove(indexOfZero);
+	public boolean identityMUL() {
+		final int indexOfOne = ((CASList) param).indexOf(CASConstants.ONE);
+		if (indexOfOne != -1) {
+			((CASList) param).remove(indexOfOne);
 			return true;
 		}
 		return false;

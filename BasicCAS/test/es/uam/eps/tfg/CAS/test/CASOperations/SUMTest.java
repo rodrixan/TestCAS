@@ -1,11 +1,13 @@
 package es.uam.eps.tfg.CAS.test.CASOperations;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import es.uam.eps.tfg.CAS.CASOperations.SUM;
+import es.uam.eps.tfg.CAS.CASTypes.CASConstants;
 import es.uam.eps.tfg.CAS.CASTypes.CASList;
 import es.uam.eps.tfg.CAS.CASTypes.CASVariable;
 
@@ -31,7 +33,7 @@ public class SUMTest {
 		final SUM associateSUM = new SUM(CASList.concat(new CASVariable("a"), new CASVariable("b")));
 		sumOperation.associateSUM(0, 2);
 		assertEquals(3, sumOperation.paramSize());
-		assertEquals(0, sumOperation.getPositionOf(associateSUM));
+		assertEquals(associateSUM, sumOperation.getParamAt(0));
 		assertEquals("SUM(SUM(a,b),c,d)", sumOperation.getElemRepresentation());
 	}
 
@@ -40,6 +42,14 @@ public class SUMTest {
 		sumOperation.associateSUM(0, 2);
 		sumOperation.conmuteSUM(0, 1);
 		assertEquals("SUM(c,SUM(a,b),d)", sumOperation.getElemRepresentation());
+	}
+
+	@Test
+	public void shouldRemoveZero() {
+		sumOperation = new SUM(CASList.concat(new CASVariable("a"), new CASVariable("b"), CASConstants.ZERO));
+		assertTrue(sumOperation.identitySUM());
+		assertEquals(2, sumOperation.paramSize());
+		assertEquals("SUM(a,b)", sumOperation.getElemRepresentation());
 	}
 
 	private CASList createSampleParamList() {
