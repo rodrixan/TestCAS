@@ -12,6 +12,10 @@ public abstract class CASOperation extends CASElement {
 		this.param = param;
 	}
 
+	public void setParameter(CASElement param) {
+		this.param = param;
+	}
+
 	public String getOperationName() {
 		return operationName;
 	}
@@ -26,12 +30,12 @@ public abstract class CASOperation extends CASElement {
 	}
 
 	@Override
-	public String getElemRepresentation() {
-		return operationName + "(" + param.getElemRepresentation() + ")";
+	public String getRepresentation() {
+		return operationName + "(" + param.getRepresentation() + ")";
 	}
 
 	@Override
-	public int getElemValue() {
+	public int getValue() {
 		return NAN;
 	}
 

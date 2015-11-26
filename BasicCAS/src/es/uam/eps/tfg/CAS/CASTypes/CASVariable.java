@@ -34,12 +34,12 @@ public class CASVariable extends CASElement {
 	}
 
 	@Override
-	public String getElemRepresentation() {
+	public String getRepresentation() {
 		return name;
 	}
 
 	@Override
-	public int getElemValue() {
+	public int getValue() {
 		return value;
 	}
 }

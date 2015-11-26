@@ -1,4 +1,4 @@
-package es.uam.eps.tfg.CAS.test.CASOperations;
+package es.uam.eps.tfg.CAS.test.CASOperations.unitTests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -25,7 +25,7 @@ public class MULTest {
 	@Test
 	public void shouldConmuteParamList() {
 		mulOperation.conmuteMUL(0, 2);
-		assertEquals("MUL(b,c,a,d)", mulOperation.getElemRepresentation());
+		assertEquals("MUL(b,c,a,d)", mulOperation.getRepresentation());
 	}
 
 	@Test
@@ -34,14 +34,21 @@ public class MULTest {
 		mulOperation.associateMUL(0, 2);
 		assertEquals(3, mulOperation.paramSize());
 		assertEquals(associateMUL, mulOperation.getParamAt(0));
-		assertEquals("MUL(MUL(a,b),c,d)", mulOperation.getElemRepresentation());
+		assertEquals("MUL(MUL(a,b),c,d)", mulOperation.getRepresentation());
+	}
+
+	@Test
+	public void shouldDisassociateParamList() {
+		mulOperation.associateMUL(1, 3);
+		assertTrue(mulOperation.disassociateMUL());
+		assertEquals("MUL(a,b,c,d)", mulOperation.getRepresentation());
 	}
 
 	@Test
 	public void shouldConmuteAndAssociateParamList() {
 		mulOperation.associateMUL(0, 2);
 		mulOperation.conmuteMUL(0, 1);
-		assertEquals("MUL(c,MUL(a,b),d)", mulOperation.getElemRepresentation());
+		assertEquals("MUL(c,MUL(a,b),d)", mulOperation.getRepresentation());
 	}
 
 	@Test
@@ -49,7 +56,7 @@ public class MULTest {
 		mulOperation = new MUL(CASList.concat(new CASVariable("a"), new CASVariable("b"), CASConstants.ONE));
 		assertTrue(mulOperation.identityMUL());
 		assertEquals(2, mulOperation.paramSize());
-		assertEquals("MUL(a,b)", mulOperation.getElemRepresentation());
+		assertEquals("MUL(a,b)", mulOperation.getRepresentation());
 	}
 
 	private CASList createSampleParamList() {

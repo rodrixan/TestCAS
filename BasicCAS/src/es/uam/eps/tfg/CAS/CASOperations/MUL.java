@@ -53,10 +53,10 @@ public class MUL extends CASOperation {
 	}
 
 	@Override
-	public int getElemValue() {
+	public int getValue() {
 		int mulValue = 0;
 		for (int i = 0; i < ((CASList) param).size(); i++) {
-			mulValue *= ((CASList) param).get(i).getElemValue();
+			mulValue *= ((CASList) param).get(i).getValue();
 		}
 		return mulValue;
 	}
@@ -68,5 +68,46 @@ public class MUL extends CASOperation {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean disassociateMUL() {
+
+		int indexOfMUL = 0;
+		int timesFound = 0;
+
+		while (indexOfMUL != -1) {
+			indexOfMUL = firstIndexOf(MUL_NAME);
+			if (indexOfMUL == -1) {
+				break;
+			}
+
+			moveMULParamsToThisParams(indexOfMUL);
+
+			timesFound++;
+		}
+		return timesFound != 0;
+	}
+
+	private void moveMULParamsToThisParams(int indexOfMUL) {
+		final MUL MULParam = (MUL) this.getParamAt(indexOfMUL);
+
+		((CASList) param).remove(indexOfMUL);
+
+		((CASList) param).set(indexOfMUL, MULParam.param);
+	}
+
+	public boolean contains(String operationName) {
+		return (firstIndexOf(operationName) != -1);
+	}
+
+	public int firstIndexOf(String operationName) {
+
+		for (int i = 0; i < paramSize(); i++) {
+			final CASElement e = ((CASList) param).get(i);
+			if (e.getType() == CASElemType.OPERATION && ((CASOperation) e).getOperationName().equals(operationName)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }

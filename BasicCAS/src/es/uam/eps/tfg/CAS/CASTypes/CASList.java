@@ -120,10 +120,10 @@ public class CASList extends CASElement {
 	}
 
 	@Override
-	public String getElemRepresentation() {
+	public String getRepresentation() {
 		final StringBuilder builder = new StringBuilder();
 		for (final CASElement e : elementList) {
-			builder.append(e.getElemRepresentation() + ",");
+			builder.append(e.getRepresentation() + ",");
 		}
 		final String cleanString = removeLastColon(builder.toString());
 
@@ -142,7 +142,7 @@ public class CASList extends CASElement {
 	}
 
 	@Override
-	public int getElemValue() {
+	public int getValue() {
 		return NAN;
 	}
 }

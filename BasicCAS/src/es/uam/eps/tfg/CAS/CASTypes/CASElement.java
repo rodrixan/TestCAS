@@ -10,9 +10,9 @@ public abstract class CASElement {
 
 	abstract public CASElemType getType();
 
-	abstract public String getElemRepresentation();
+	abstract public String getRepresentation();
 
-	abstract public int getElemValue();
+	abstract public int getValue();
 
 	@Override
 	public boolean equals(Object obj) {
@@ -27,10 +27,10 @@ public abstract class CASElement {
 		if (!this.getType().equals(other.getType())) {
 			return false;
 		}
-		if (!this.getElemRepresentation().equals(other.getElemRepresentation())) {
+		if (!this.getRepresentation().equals(other.getRepresentation())) {
 			return false;
 		}
-		if (this.getElemValue() != other.getElemValue()) {
+		if (this.getValue() != other.getValue()) {
 			return false;
 		}
 

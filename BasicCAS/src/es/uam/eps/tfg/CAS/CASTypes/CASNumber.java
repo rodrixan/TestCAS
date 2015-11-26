@@ -19,12 +19,12 @@ public class CASNumber extends CASElement {
 	}
 
 	@Override
-	public String getElemRepresentation() {
+	public String getRepresentation() {
 		return value + "";
 	}
 
 	@Override
-	public int getElemValue() {
+	public int getValue() {
 		return value;
 	};
 }

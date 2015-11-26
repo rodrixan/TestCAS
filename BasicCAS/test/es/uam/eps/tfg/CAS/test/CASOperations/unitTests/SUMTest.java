@@ -1,4 +1,4 @@
-package es.uam.eps.tfg.CAS.test.CASOperations;
+package es.uam.eps.tfg.CAS.test.CASOperations.unitTests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -25,7 +25,7 @@ public class SUMTest {
 	@Test
 	public void shouldConmuteParamList() {
 		sumOperation.conmuteSUM(0, 2);
-		assertEquals("SUM(b,c,a,d)", sumOperation.getElemRepresentation());
+		assertEquals("SUM(b,c,a,d)", sumOperation.getRepresentation());
 	}
 
 	@Test
@@ -34,14 +34,21 @@ public class SUMTest {
 		sumOperation.associateSUM(0, 2);
 		assertEquals(3, sumOperation.paramSize());
 		assertEquals(associateSUM, sumOperation.getParamAt(0));
-		assertEquals("SUM(SUM(a,b),c,d)", sumOperation.getElemRepresentation());
+		assertEquals("SUM(SUM(a,b),c,d)", sumOperation.getRepresentation());
+	}
+
+	@Test
+	public void shouldDisassociateParamList() {
+		sumOperation.associateSUM(1, 3);
+		assertTrue(sumOperation.disassociateSUM());
+		assertEquals("SUM(a,b,c,d)", sumOperation.getRepresentation());
 	}
 
 	@Test
 	public void shouldConmuteAndAssociateParamList() {
 		sumOperation.associateSUM(0, 2);
 		sumOperation.conmuteSUM(0, 1);
-		assertEquals("SUM(c,SUM(a,b),d)", sumOperation.getElemRepresentation());
+		assertEquals("SUM(c,SUM(a,b),d)", sumOperation.getRepresentation());
 	}
 
 	@Test
@@ -49,7 +56,7 @@ public class SUMTest {
 		sumOperation = new SUM(CASList.concat(new CASVariable("a"), new CASVariable("b"), CASConstants.ZERO));
 		assertTrue(sumOperation.identitySUM());
 		assertEquals(2, sumOperation.paramSize());
-		assertEquals("SUM(a,b)", sumOperation.getElemRepresentation());
+		assertEquals("SUM(a,b)", sumOperation.getRepresentation());
 	}
 
 	private CASList createSampleParamList() {
