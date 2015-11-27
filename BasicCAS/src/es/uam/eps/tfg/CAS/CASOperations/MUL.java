@@ -110,4 +110,58 @@ public class MUL extends CASOperation {
 		}
 		return -1;
 	}
+
+	public SUM distributiveMUL(int indexOfElementToDistribute, int indexOfSUMOperation) {
+		final CASElement elementAtSUMIndex = getParamAt(indexOfSUMOperation);
+
+		if (elementAtSUMIndex.getType() != CASElemType.OPERATION
+				|| ((CASOperation) elementAtSUMIndex).getOperationName() != SUM.SUM_NAME) {
+			return null;
+		}
+
+		final SUM distributedElement = createDistribututiveElement(indexOfElementToDistribute, elementAtSUMIndex);
+
+		removeOldElements(indexOfElementToDistribute, indexOfSUMOperation);
+
+		final int minIndex = Math.min(indexOfElementToDistribute, indexOfSUMOperation);
+
+		if (minIndex <= ((CASList) param).size()) {
+			((CASList) param).add(distributedElement);
+		} else {
+			((CASList) param).set(minIndex, distributedElement);
+		}
+
+		return distributedElement;
+
+	}
+
+	private SUM createDistribututiveElement(int indexOfElementToDistribute, final CASElement elementAtSUMIndex) {
+		final SUM sumElement = (SUM) elementAtSUMIndex;
+		final CASElement elementToDistribute = getParamAt(indexOfElementToDistribute);
+
+		final CASList newParams = createDistributedParamList(sumElement, elementToDistribute);
+
+		final SUM distributedElement = new SUM(newParams);
+		return distributedElement;
+	}
+
+	private void removeOldElements(int indexOfElementToDistribute, int indexOfSUMOperation) {
+		if (indexOfSUMOperation > indexOfElementToDistribute) {
+			((CASList) param).remove(indexOfSUMOperation);
+			((CASList) param).remove(indexOfElementToDistribute);
+		} else {
+			((CASList) param).remove(indexOfElementToDistribute);
+			((CASList) param).remove(indexOfSUMOperation);
+		}
+	}
+
+	private CASList createDistributedParamList(final SUM sumElement, final CASElement elementToDistribute) {
+		final CASList list = new CASList();
+		for (int i = 0; i < sumElement.paramSize(); i++) {
+			final CASList sumParamWithMulElement = CASList.concat(elementToDistribute, sumElement.getParamAt(i));
+			final MUL mulOperation = new MUL(sumParamWithMulElement);
+			list.add(mulOperation);
+		}
+		return list;
+	}
 }

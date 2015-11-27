@@ -68,7 +68,7 @@ public class CASList extends CASElement {
 		CASList settedList;
 
 		if (elem.getType() != CASElemType.LIST) {
-			elementList.set(index, elem);
+			elementList.add(index, elem);
 		} else {
 			settedList = setListElements(this, (CASList) elem, index);
 			if (settedList != null) {
