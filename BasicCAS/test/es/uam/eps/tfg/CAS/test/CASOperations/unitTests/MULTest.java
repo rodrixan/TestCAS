@@ -59,6 +59,12 @@ public class MULTest {
 		assertEquals("MUL(a,b)", mulOperation.getRepresentation());
 	}
 
+	@Test
+	public void shouldReturnInfixNotation() {
+		mulOperation = new MUL(createSampleParamList());
+		assertEquals("(a*b*c*d)", mulOperation.toInfixNotation());
+	}
+
 	private CASList createSampleParamList() {
 		final CASList list = new CASList();
 		list.add(new CASVariable("a"));

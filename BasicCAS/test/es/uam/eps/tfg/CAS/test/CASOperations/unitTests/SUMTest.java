@@ -59,6 +59,12 @@ public class SUMTest {
 		assertEquals("SUM(a,b)", sumOperation.getRepresentation());
 	}
 
+	@Test
+	public void shouldReturnInfixNotation() {
+		sumOperation = new SUM(createSampleParamList());
+		assertEquals("(a+b+c+d)", sumOperation.toInfixNotation());
+	}
+
 	private CASList createSampleParamList() {
 		final CASList list = new CASList();
 		list.add(new CASVariable("a"));

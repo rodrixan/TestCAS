@@ -35,9 +35,7 @@ public class SUM extends CASOperation {
 		final CASList preAssocitedElems = ((CASList) param).subList(0, fromIndex);
 		final CASList postAssociatedElems = ((CASList) param).subList(toIndex, paramListSize);
 
-		final CASList associtatedElemList = ((CASList) param).subList(fromIndex, toIndex);
-
-		final SUM associatedElemOperation = new SUM(associtatedElemList);
+		final SUM associatedElemOperation = createAssociatedSUMOperation(fromIndex, toIndex);
 
 		final CASList associatedList = CASList.concat(preAssocitedElems, associatedElemOperation, postAssociatedElems);
 
@@ -46,6 +44,13 @@ public class SUM extends CASOperation {
 			return true;
 		}
 		return false;
+	}
+
+	private SUM createAssociatedSUMOperation(int fromIndex, int toIndex) {
+		final CASList associtatedElemList = ((CASList) param).subList(fromIndex, toIndex);
+
+		final SUM associatedElemOperation = new SUM(associtatedElemList);
+		return associatedElemOperation;
 	}
 
 	public int getPositionOf(CASElement element) {
@@ -62,8 +67,9 @@ public class SUM extends CASOperation {
 	@Override
 	public int getValue() {
 		int sumValue = 0;
-		for (int i = 0; i < ((CASList) param).size(); i++) {
-			sumValue += ((CASList) param).get(i).getValue();
+
+		for (final CASElement e : ((CASList) param)) {
+			sumValue += e.getValue();
 		}
 		return sumValue;
 	}
@@ -109,12 +115,25 @@ public class SUM extends CASOperation {
 
 	public int firstIndexOf(String operationName) {
 
-		for (int i = 0; i < paramSize(); i++) {
-			final CASElement e = ((CASList) param).get(i);
+		for (final CASElement e : ((CASList) param)) {
 			if (e.getType() == CASElemType.OPERATION && ((CASOperation) e).getOperationName().equals(operationName)) {
-				return i;
+				return ((CASList) param).indexOf(e);
 			}
 		}
 		return -1;
 	}
+
+	@Override
+	public String toInfixNotation() {
+		final StringBuilder builder = new StringBuilder();
+
+		builder.append("(");
+		for (final CASElement e : ((CASList) param)) {
+			builder.append(e.toInfixNotation() + SUM_OPERATOR);
+		}
+		final String cleanString = super.removeLastOperator(builder.toString());
+
+		return cleanString + ")";
+	}
+
 }

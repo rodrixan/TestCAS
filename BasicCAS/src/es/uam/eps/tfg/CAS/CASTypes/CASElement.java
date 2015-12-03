@@ -6,13 +6,13 @@ public abstract class CASElement {
 		LIST, NUMBER, VARIABLE, OPERATION, ELEMENT
 	};
 
-	public static final int NAN = -1;
-
 	abstract public CASElemType getType();
 
 	abstract public String getRepresentation();
 
 	abstract public int getValue();
+
+	abstract public String toInfixNotation();
 
 	@Override
 	public boolean equals(Object obj) {

@@ -25,20 +25,25 @@ public class MUL extends CASOperation {
 		}
 
 		final int paramListSize = ((CASList) param).size();
-		final CASList preAssocitedElems = ((CASList) param).subList(0, fromIndex);
-		final CASList postAssociatedElems = ((CASList) param).subList(toIndex, paramListSize);
+		final CASList prefix = ((CASList) param).subList(0, fromIndex);
+		final CASList suffix = ((CASList) param).subList(toIndex, paramListSize);
 
-		final CASList associtatedElemList = ((CASList) param).subList(fromIndex, toIndex);
+		final MUL associatedElemOperation = createAssociatedMULOperation(fromIndex, toIndex);
 
-		final MUL associatedElemOperation = new MUL(associtatedElemList);
-
-		final CASList associatedList = CASList.concat(preAssocitedElems, associatedElemOperation, postAssociatedElems);
+		final CASList associatedList = CASList.concat(prefix, associatedElemOperation, suffix);
 
 		if (associatedList != null) {
 			this.param = associatedList;
 			return true;
 		}
 		return false;
+	}
+
+	private MUL createAssociatedMULOperation(int fromIndex, int toIndex) {
+		final CASList associtatedElemList = ((CASList) param).subList(fromIndex, toIndex);
+
+		final MUL associatedElemOperation = new MUL(associtatedElemList);
+		return associatedElemOperation;
 	}
 
 	public int getPositionOf(CASElement element) {
@@ -55,8 +60,8 @@ public class MUL extends CASOperation {
 	@Override
 	public int getValue() {
 		int mulValue = 0;
-		for (int i = 0; i < ((CASList) param).size(); i++) {
-			mulValue *= ((CASList) param).get(i).getValue();
+		for (final CASElement e : ((CASList) param)) {
+			mulValue *= e.getValue();
 		}
 		return mulValue;
 	}
@@ -102,10 +107,9 @@ public class MUL extends CASOperation {
 
 	public int firstIndexOf(String operationName) {
 
-		for (int i = 0; i < paramSize(); i++) {
-			final CASElement e = ((CASList) param).get(i);
+		for (final CASElement e : ((CASList) param)) {
 			if (e.getType() == CASElemType.OPERATION && ((CASOperation) e).getOperationName().equals(operationName)) {
-				return i;
+				return ((CASList) param).indexOf(e);
 			}
 		}
 		return -1;
@@ -119,7 +123,7 @@ public class MUL extends CASOperation {
 			return null;
 		}
 
-		final SUM distributedElement = createDistribututiveElement(indexOfElementToDistribute, elementAtSUMIndex);
+		final SUM distributedElement = createDistributiveElement(indexOfElementToDistribute, elementAtSUMIndex);
 
 		removeOldElements(indexOfElementToDistribute, indexOfSUMOperation);
 
@@ -135,7 +139,7 @@ public class MUL extends CASOperation {
 
 	}
 
-	private SUM createDistribututiveElement(int indexOfElementToDistribute, final CASElement elementAtSUMIndex) {
+	private SUM createDistributiveElement(int indexOfElementToDistribute, final CASElement elementAtSUMIndex) {
 		final SUM sumElement = (SUM) elementAtSUMIndex;
 		final CASElement elementToDistribute = getParamAt(indexOfElementToDistribute);
 
@@ -163,5 +167,18 @@ public class MUL extends CASOperation {
 			list.add(mulOperation);
 		}
 		return list;
+	}
+
+	@Override
+	public String toInfixNotation() {
+		final StringBuilder builder = new StringBuilder();
+
+		builder.append("(");
+		for (final CASElement e : ((CASList) param)) {
+			builder.append(e.toInfixNotation() + MUL_OPERATOR);
+		}
+		final String cleanString = super.removeLastOperator(builder.toString());
+
+		return cleanString + ")";
 	}
 }

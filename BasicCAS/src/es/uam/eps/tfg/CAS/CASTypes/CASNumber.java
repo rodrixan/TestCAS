@@ -26,5 +26,10 @@ public class CASNumber extends CASElement {
 	@Override
 	public int getValue() {
 		return value;
+	}
+
+	@Override
+	public String toInfixNotation() {
+		return getRepresentation();
 	};
 }

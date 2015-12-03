@@ -7,7 +7,7 @@ public class CASVariable extends CASElement {
 
 	public CASVariable(String name) {
 		this.name = name;
-		this.value = NAN;
+		this.value = CASConstants.NAN;
 	}
 
 	public CASVariable(String name, int value) {
@@ -20,12 +20,12 @@ public class CASVariable extends CASElement {
 		return CASElemType.VARIABLE;
 	};
 
-	public void setElemValue(int value) {
+	public void setValue(int value) {
 		this.value = value;
 	}
 
-	public void setElemRepresentation(String representation) {
-		this.name = representation;
+	public void rename(String name) {
+		this.name = name;
 	}
 
 	@Override
@@ -41,5 +41,10 @@ public class CASVariable extends CASElement {
 	@Override
 	public int getValue() {
 		return value;
+	}
+
+	@Override
+	public String toInfixNotation() {
+		return getRepresentation();
 	}
 }

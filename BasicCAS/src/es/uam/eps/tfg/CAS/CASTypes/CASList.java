@@ -1,9 +1,10 @@
 package es.uam.eps.tfg.CAS.CASTypes;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class CASList extends CASElement {
+public class CASList extends CASElement implements Iterable<CASElement> {
 
 	private List<CASElement> elementList;
 
@@ -143,6 +144,16 @@ public class CASList extends CASElement {
 
 	@Override
 	public int getValue() {
-		return NAN;
+		return CASConstants.NAN;
+	}
+
+	@Override
+	public Iterator<CASElement> iterator() {
+		return elementList.iterator();
+	}
+
+	@Override
+	public String toInfixNotation() {
+		return "";
 	}
 }

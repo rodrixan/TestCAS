@@ -36,7 +36,7 @@ public abstract class CASOperation extends CASElement {
 
 	@Override
 	public int getValue() {
-		return NAN;
+		return CASConstants.NAN;
 	}
 
 	@Override
@@ -46,6 +46,12 @@ public abstract class CASOperation extends CASElement {
 
 	public int paramSize() {
 		return param.size();
+	}
+
+	protected String removeLastOperator(final String dirtyString) {
+		final int lastOperatorIndex = dirtyString.lastIndexOf(operator);
+		final String cleanString = dirtyString.substring(0, lastOperatorIndex);
+		return cleanString;
 	}
 
 }

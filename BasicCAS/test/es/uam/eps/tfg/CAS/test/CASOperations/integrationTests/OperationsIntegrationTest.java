@@ -6,11 +6,12 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import es.uam.eps.tfg.CAS.CASOperations.MUL;
+import es.uam.eps.tfg.CAS.CASOperations.NEG;
 import es.uam.eps.tfg.CAS.CASOperations.SUM;
 import es.uam.eps.tfg.CAS.CASTypes.CASList;
 import es.uam.eps.tfg.CAS.CASTypes.CASVariable;
 
-public class MULSUMIntegrationTest {
+public class OperationsIntegrationTest {
 	MUL mulOperationUUT;
 	SUM sumOperationUUT;
 
@@ -25,6 +26,13 @@ public class MULSUMIntegrationTest {
 		assertEquals("SUM(MUL(d,a),MUL(d,b))", distributedResult.getRepresentation());
 		assertEquals("MUL(c,SUM(MUL(d,a),MUL(d,b)))", mulOperationUUT.getRepresentation());
 
+	}
+
+	@Test
+	public void shouldReturnInfixNotation() {
+		final SUM sumExp = new SUM(createSampleParamList());
+		mulOperationUUT = new MUL(CASList.concat(new CASVariable("c"), sumExp, new NEG(new CASVariable("d"))));
+		assertEquals("(c*(a+b)*(-d))", mulOperationUUT.toInfixNotation());
 	}
 
 	private CASList createSampleParamList() {
