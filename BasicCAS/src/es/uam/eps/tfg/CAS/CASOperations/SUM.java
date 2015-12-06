@@ -23,34 +23,11 @@ public class SUM extends CASOperation {
 	}
 
 	public void conmuteSUM(int fromIndex, int toIndex) {
-		((CASList) param).moveElement(fromIndex, toIndex);
+		super.conmutativeProperty(fromIndex, toIndex);
 	}
 
 	public boolean associateSUM(int fromIndex, int toIndex) {
-
-		if (fromIndex == 0 && toIndex == ((CASList) param).size() - 1) {
-			return true;
-		}
-		final int paramListSize = ((CASList) param).size();
-		final CASList preAssocitedElems = ((CASList) param).subList(0, fromIndex);
-		final CASList postAssociatedElems = ((CASList) param).subList(toIndex, paramListSize);
-
-		final SUM associatedElemOperation = createAssociatedSUMOperation(fromIndex, toIndex);
-
-		final CASList associatedList = CASList.concat(preAssocitedElems, associatedElemOperation, postAssociatedElems);
-
-		if (associatedList != null) {
-			this.param = associatedList;
-			return true;
-		}
-		return false;
-	}
-
-	private SUM createAssociatedSUMOperation(int fromIndex, int toIndex) {
-		final CASList associtatedElemList = ((CASList) param).subList(fromIndex, toIndex);
-
-		final SUM associatedElemOperation = new SUM(associtatedElemList);
-		return associatedElemOperation;
+		return super.associativeProperty(fromIndex, toIndex, this.getClass());
 	}
 
 	public int getPositionOf(CASElement element) {

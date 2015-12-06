@@ -1,17 +1,36 @@
 package es.uam.eps.tfg.CAS.CASTypes;
 
+/**
+ * Basic class for the entire types of the CAS
+ *
+ * @author Rodri
+ *
+ */
 public abstract class CASElement {
 
 	public enum CASElemType {
 		LIST, NUMBER, VARIABLE, OPERATION, ELEMENT
 	};
 
+	/**
+	 * @return the type of the element
+	 * @see CASElemType
+	 */
 	abstract public CASElemType getType();
 
+	/**
+	 * @return a string representation of the element
+	 */
 	abstract public String getRepresentation();
 
+	/**
+	 * @return the integer value of the element
+	 */
 	abstract public int getValue();
 
+	/**
+	 * @return infix notation string representation of the element
+	 */
 	abstract public String toInfixNotation();
 
 	@Override
@@ -37,6 +56,10 @@ public abstract class CASElement {
 		return true;
 	}
 
+	/**
+	 * @return number of elements (1 if single, list size if list, 0 if
+	 *         operation)
+	 */
 	public abstract int size();
 
 }
