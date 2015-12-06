@@ -15,35 +15,11 @@ public class MUL extends CASOperation {
 	}
 
 	public void conmuteMUL(int fromIndex, int toIndex) {
-		((CASList) param).moveElement(fromIndex, toIndex);
+		super.conmutativeProperty(fromIndex, toIndex);
 	}
 
 	public boolean associateMUL(int fromIndex, int toIndex) {
-
-		if (fromIndex == 0 && toIndex == ((CASList) param).size() - 1) {
-			return true;
-		}
-
-		final int paramListSize = ((CASList) param).size();
-		final CASList prefix = ((CASList) param).subList(0, fromIndex);
-		final CASList suffix = ((CASList) param).subList(toIndex, paramListSize);
-
-		final MUL associatedElemOperation = createAssociatedMULOperation(fromIndex, toIndex);
-
-		final CASList associatedList = CASList.concat(prefix, associatedElemOperation, suffix);
-
-		if (associatedList != null) {
-			this.param = associatedList;
-			return true;
-		}
-		return false;
-	}
-
-	private MUL createAssociatedMULOperation(int fromIndex, int toIndex) {
-		final CASList associtatedElemList = ((CASList) param).subList(fromIndex, toIndex);
-
-		final MUL associatedElemOperation = new MUL(associtatedElemList);
-		return associatedElemOperation;
+		return super.associativeProperty(fromIndex, toIndex, this.getClass());
 	}
 
 	public int getPositionOf(CASElement element) {
