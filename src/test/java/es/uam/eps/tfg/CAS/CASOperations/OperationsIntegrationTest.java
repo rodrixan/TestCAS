@@ -2,13 +2,12 @@ package es.uam.eps.tfg.CAS.CASOperations;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import es.uam.eps.tfg.CAS.CASOperations.MUL;
-import es.uam.eps.tfg.CAS.CASOperations.NEG;
-import es.uam.eps.tfg.CAS.CASOperations.SUM;
 import es.uam.eps.tfg.CAS.CASTypes.CASList;
+import es.uam.eps.tfg.CAS.CASTypes.CASNumber;
 import es.uam.eps.tfg.CAS.CASTypes.CASVariable;
 
 public class OperationsIntegrationTest {
@@ -33,6 +32,13 @@ public class OperationsIntegrationTest {
 		final SUM sumExp = new SUM(createSampleParamList());
 		mulOperationUUT = new MUL(CASList.concat(new CASVariable("c"), sumExp, new NEG(new CASVariable("d"))));
 		assertEquals("(c*(a+b)*(-d))", mulOperationUUT.toInfixNotation());
+	}
+
+	@Test
+	public void shouldRemoveOppositeElementForSUMOperation() {
+		sumOperationUUT = new SUM(CASList.concat(new CASNumber(2), new NEG(new CASNumber(2))));
+		final boolean expectedResult = sumOperationUUT.identitySUM();
+		assertTrue(expectedResult);
 	}
 
 	private CASList createSampleParamList() {

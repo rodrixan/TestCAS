@@ -23,10 +23,7 @@ public class MUL extends CASOperation {
 	}
 
 	public int getPositionOf(CASElement element) {
-		if (((CASList) param).contains(element)) {
-			return ((CASList) param).indexOf(element);
-		}
-		return -1;
+		return ((CASList) param).indexOf(element);
 	}
 
 	public CASElement getParamAt(int position) {
@@ -43,12 +40,7 @@ public class MUL extends CASOperation {
 	}
 
 	public boolean identityMUL() {
-		final int indexOfOne = ((CASList) param).indexOf(CASConstants.ONE);
-		if (indexOfOne != -1) {
-			((CASList) param).remove(indexOfOne);
-			return true;
-		}
-		return false;
+		return super.identityProperty(MUL.class, CASConstants.ONE, this);
 	}
 
 	public boolean disassociateMUL() {
@@ -156,5 +148,11 @@ public class MUL extends CASOperation {
 		final String cleanString = super.removeLastOperator(builder.toString());
 
 		return cleanString + ")";
+	}
+
+	@Override
+	public boolean areInverse(CASElement o1, CASElement o2) {
+		final int mul = o1.getValue() * o2.getValue();
+		return mul == CASConstants.ONE.getValue();
 	}
 }

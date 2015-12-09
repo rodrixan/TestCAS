@@ -31,10 +31,7 @@ public class SUM extends CASOperation {
 	}
 
 	public int getPositionOf(CASElement element) {
-		if (((CASList) param).contains(element)) {
-			return ((CASList) param).indexOf(element);
-		}
-		return -1;
+		return ((CASList) param).indexOf(element);
 	}
 
 	public CASElement getParamAt(int position) {
@@ -52,12 +49,7 @@ public class SUM extends CASOperation {
 	}
 
 	public boolean identitySUM() {
-		final int indexOfZero = ((CASList) param).indexOf(CASConstants.ZERO);
-		if (indexOfZero != -1) {
-			((CASList) param).remove(indexOfZero);
-			return true;
-		}
-		return false;
+		return super.identityProperty(SUM.class, CASConstants.ZERO, this);
 	}
 
 	public boolean disassociateSUM() {
@@ -111,6 +103,12 @@ public class SUM extends CASOperation {
 		final String cleanString = super.removeLastOperator(builder.toString());
 
 		return cleanString + ")";
+	}
+
+	@Override
+	public boolean areInverse(CASElement o1, CASElement o2) {
+		final int sum = o1.getValue() + o2.getValue();
+		return sum == CASConstants.ZERO.getValue();
 	}
 
 }

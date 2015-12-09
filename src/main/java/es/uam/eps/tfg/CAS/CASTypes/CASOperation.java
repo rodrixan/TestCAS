@@ -18,7 +18,7 @@ import es.uam.eps.tfg.CAS.CASExceptions.CASOperationCreationException;
  * @author Rodrigo de Blas
  *
  */
-public abstract class CASOperation extends CASElement {
+public abstract class CASOperation extends CASElement implements InverseElementComparator<CASElement> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CASOperation.class);
 
@@ -128,6 +128,7 @@ public abstract class CASOperation extends CASElement {
 		checkParamInstanceofList();
 
 		LOG.debug("Applying associative property for class {}", invoker.getName());
+
 		if (fromIndex == 0 && toIndex == ((CASList) param).size() - 1) {
 			return true;
 		}
@@ -192,7 +193,7 @@ public abstract class CASOperation extends CASElement {
 	 * @throws InvocationTargetException
 	 */
 
-	private CASOperation createNewOperationFromClass(Class<?> invoker, final CASList associtatedElemList)
+	private CASOperation createNewOperationFromClass(Class<?> invoker, CASList associtatedElemList)
 			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException {
 		final Constructor<?> classConstructor = invoker.getConstructor(CASList.class);
@@ -200,6 +201,35 @@ public abstract class CASOperation extends CASElement {
 		final CASOperation associatedElemOperation = (CASOperation) classConstructor.newInstance(associtatedElemList);
 
 		return associatedElemOperation;
+	}
+
+	public boolean identityProperty(Class<?> invoker, CASNumber neutralFactor,
+			InverseElementComparator<CASElement> inverseChecker) {
+
+		checkParamInstanceofList();
+		LOG.debug("Applying identity property for class {}", invoker.getName());
+
+		final boolean usedNeutralFactor = removeNeutralFactor(neutralFactor);
+		final boolean usedInverseElement = removeInverseElements(inverseChecker);
+
+		return usedNeutralFactor || usedInverseElement;
+	}
+
+	private boolean removeNeutralFactor(CASNumber neutralFactor) {
+		int indexOfNeutralFactor = 0;
+		int times = 0;
+		while (indexOfNeutralFactor != -1) {
+			indexOfNeutralFactor = ((CASList) param).indexOf(neutralFactor);
+			if (indexOfNeutralFactor != -1) {
+				((CASList) param).remove(indexOfNeutralFactor);
+				times++;
+			}
+		}
+		return times != 0;
+	}
+
+	private boolean removeInverseElements(InverseElementComparator<CASElement> inverseChecker) {
+		return false;
 	}
 
 	/**
@@ -210,5 +240,10 @@ public abstract class CASOperation extends CASElement {
 		if (!(param instanceof CASList)) {
 			throw new UnsupportedOperationException("This operation does not support the invoked property.");
 		}
+	}
+
+	@Override
+	public boolean areInverse(CASElement o1, CASElement o2) {
+		return false;
 	}
 }
