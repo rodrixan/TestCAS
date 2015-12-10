@@ -52,7 +52,7 @@ public class MULTest {
 	}
 
 	@Test
-	public void shouldRemoveZero() {
+	public void shouldRemoveOne() {
 		mulOperation = new MUL(CASList.concat(new CASVariable("a"), new CASVariable("b"), CASConstants.ONE));
 		assertTrue(mulOperation.identityMUL());
 		assertEquals(2, mulOperation.paramSize());

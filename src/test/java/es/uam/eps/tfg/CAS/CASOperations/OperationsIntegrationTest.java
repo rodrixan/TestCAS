@@ -39,6 +39,7 @@ public class OperationsIntegrationTest {
 		sumOperationUUT = new SUM(CASList.concat(new CASNumber(2), new NEG(new CASNumber(2))));
 		final boolean expectedResult = sumOperationUUT.identitySUM();
 		assertTrue(expectedResult);
+		assertEquals(0,sumOperationUUT.getValue());
 	}
 
 	private CASList createSampleParamList() {

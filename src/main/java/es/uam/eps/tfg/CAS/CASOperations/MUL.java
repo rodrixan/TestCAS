@@ -153,6 +153,7 @@ public class MUL extends CASOperation {
 	@Override
 	public boolean areInverse(CASElement o1, CASElement o2) {
 		final int mul = o1.getValue() * o2.getValue();
-		return mul == CASConstants.ONE.getValue();
+		final boolean isNAN = (o1.getValue()==CASConstants.NAN)||(o2.getValue()==CASConstants.NAN);
+		return mul == CASConstants.ONE.getValue()&& !isNAN;
 	}
 }
